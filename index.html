@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    #qr-reader {
+      width: 500px;
+      margin-bottom: 20px;
+    }
+    #qr-reader-results {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2d2d2d;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>QR Code Scanner</h1>
+  <div id="qr-reader"></div>
+  <div id="qr-reader-results">Scan a QR code using your camera.</div>
+
+  <script>
+    const resultContainer = document.getElementById('qr-reader-results');
+    let lastResult, countResults = 0;
+
+    function onScanSuccess(decodedText, decodedResult) {
+      if (decodedText !== lastResult) {
+        lastResult = decodedText;
+        countResults++;
+        resultContainer.innerText = `✅ Scan ${countResults}: ${decodedText}`;
+        console.log(`Scan result ${decodedText}`, decodedResult);
+      }
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: 250
+    });
+
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+
+</body>
+</html>
